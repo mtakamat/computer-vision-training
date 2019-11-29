@@ -21,7 +21,32 @@ def common_use(path1,path2):
                 and re.search(r"\.(jpg$)",f)
                 ]
     return common_files
+"""
+#To Do:make DoG filter(Difference of Gaussian filter)
+def DoG(path1,path2,ksize, sigma1, sigma2):
+    img1=cv2.imread(os.path.join(path1, file_name),0)
+    #img2=cv2.imread(os.path.join(path2, file_name),0)
+    # 標準偏差が異なる2つのガウシアン画像を算出
+    img1 = cv2.GaussianBlur(img1,ksize, sigma1)
+    img2 = cv2.GaussianBlur(img1,ksize, sigma2)
+    # 2つのガウシアン画像の差分を出力
+    DoG=img1-img2
+    return DoG
 
+def compute_DoG(path1,path2,output):
+
+    common_files=common_use(path1,path2)
+    for file_name in common_files:
+        DoG=DoG(path1,path2, (3,3),1.3,2.6)
+        output_path = file_name
+        if output:
+            output_path = os.path.join(output, output_path)
+        cv2.imwrite(output_path,DoG)
+"""
+#To Do : 画像反転機能を作る
+def img_rotate(path1):
+
+    return img_rotate
 
 def get_BoundingBox(path1,path2,output):
     if output:
@@ -79,8 +104,8 @@ if __name__ == "__main__":
     command_action = None
     if command_name == "get_BoundingBox":
         command_action = get_BoundingBox
-    elif command_name == "know_ssim":
-    #    command_action = know_ssim
+    #elif command_name == "compute_DoG":
+    #    command_action = compute_DoG
     #elif command_name == "know_under_3S":
     #    command_action = know_under_3S
 
