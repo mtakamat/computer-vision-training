@@ -21,14 +21,13 @@ def common_use(path1,path2):
                 and re.search(r"\.(jpg$)",f)
                 ]
     return common_files
-
-def single_use(path1):
+"""
+def single_use(path1,path2):
     entries_in_path1 = set(os.listdir(path1))
     list_names = list(entries_in_path1)
     common_files = [ f
                 for f in list_names
                 if os.path.isfile(os.path.join(path1, f))
-                and re.search(r"\.(jpg$)",f)
                 ]
     return single_files
 
@@ -41,7 +40,7 @@ def DoG(path1,path2,ksize, sigma1, sigma2):
     # 2つのガウシアン画像の差分を出力
     DoG=img1-img2
     return DoG
-"""
+
 def compute_DoG(path1,path2,output):
 
     common_files=common_use(path1,path2)
@@ -51,9 +50,9 @@ def compute_DoG(path1,path2,output):
         if output:
             output_path = os.path.join(output, output_path)
         cv2.imwrite(output_path,DoG)
-"""
+
 #To Do : 画像反転機能を作る(180回転)
-def img_rotate(path1,output):
+def img_rotate(path1,path2,output):
     if output:
         os.makedirs(output, exist_ok=True)
 
@@ -66,6 +65,7 @@ def img_rotate(path1,output):
         if output:
             output_path = os.path.join(output, output_path)
         cv2.imwrite(output_path,img)
+"""
 
 #To Do : 画像合成機能を作成
 def img_blend(path1,path2,output):
@@ -74,8 +74,8 @@ def img_blend(path1,path2,output):
 
     common_files=common_use(path1,path2)
     for file_name in common_files:
-        img1=cv2.imread(os.path.join(path1, file_name),1)
-        img2=cv2.imread(os.path.join(path2, file_name),1)
+        img1=cv2.imread(os.path.join(path1, file_name),0)
+        img2=cv2.imread(os.path.join(path2, file_name),0)
         #合成
         img_blend = cv2.addWeighted(src1=img1,alpha=0.6,src2=img2,beta=0.4,gamma=0)
         output_path = file_name
@@ -139,8 +139,8 @@ if __name__ == "__main__":
     command_action = None
     if command_name == "get_BoundingBox":
         command_action = get_BoundingBox
-    elif command_name == "img_rotate":
-        command_action = img_rotate
+    #elif command_name == "img_rotate":
+    #    command_action = img_rotate
     elif command_name == "img_blend":
         command_action = img_blend
 
