@@ -21,6 +21,16 @@ def common_use(path1,path2):
                 and re.search(r"\.(jpg$)",f)
                 ]
     return common_files
+
+def single_use(path1):
+    entries_in_path1 = set(os.listdir(path1))
+    list_names = list(entries_in_path1)
+    common_files = [ f
+                for f in list_names
+                if os.path.isfile(os.path.join(path1, f))
+                and re.search(r"\.(jpg$)",f)
+                ]
+    return single_files
 """
 #To Do:make DoG filter(Difference of Gaussian filter)
 def DoG(path1,path2,ksize, sigma1, sigma2):
@@ -43,11 +53,29 @@ def compute_DoG(path1,path2,output):
             output_path = os.path.join(output, output_path)
         cv2.imwrite(output_path,DoG)
 """
-#To Do : 画像反転機能を作る
-def img_rotate(path1):
+#To Do : 画像反転機能を作る(180回転)
+def img_rotate(path1,output):
+    if output:
+        os.makedirs(output, exist_ok=True)
 
-    return img_rotate
-
+    single_files=single_use(path1)
+    for file_name in single_files:
+        img = cv2.imread(os.path.join(path1, file_name),1)
+        img = ImageOps.flip(img)
+        img = ImageOps.mirror(img)
+        output_path = file_name
+        if output:
+            output_path = os.path.join(output, output_path)
+        cv2.imwrite(output_path,img)
+    
+"""
+#To Do : 画像合成機能を作成
+def img_blend(path1,path2,output):
+    #合成
+    blended = cv2.addWeighted(src1=im,alpha=0.6,src2=im2,beta=0.4,gamma=0)
+    #plt.imshow(blended)
+    return img_blend
+"""
 def get_BoundingBox(path1,path2,output):
     if output:
         os.makedirs(output, exist_ok=True)
@@ -104,8 +132,8 @@ if __name__ == "__main__":
     command_action = None
     if command_name == "get_BoundingBox":
         command_action = get_BoundingBox
-    #elif command_name == "compute_DoG":
-    #    command_action = compute_DoG
+    elif command_name == "img_rotate":
+        command_action = img_rotate
     #elif command_name == "know_under_3S":
     #    command_action = know_under_3S
 
