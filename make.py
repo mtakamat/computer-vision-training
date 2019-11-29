@@ -31,18 +31,17 @@ def single_use(path1):
                 and re.search(r"\.(jpg$)",f)
                 ]
     return single_files
-"""
+
 #To Do:make DoG filter(Difference of Gaussian filter)
 def DoG(path1,path2,ksize, sigma1, sigma2):
     img1=cv2.imread(os.path.join(path1, file_name),0)
-    #img2=cv2.imread(os.path.join(path2, file_name),0)
     # 標準偏差が異なる2つのガウシアン画像を算出
     img1 = cv2.GaussianBlur(img1,ksize, sigma1)
     img2 = cv2.GaussianBlur(img1,ksize, sigma2)
     # 2つのガウシアン画像の差分を出力
     DoG=img1-img2
     return DoG
-
+"""
 def compute_DoG(path1,path2,output):
 
     common_files=common_use(path1,path2)
@@ -67,7 +66,7 @@ def img_rotate(path1,output):
         if output:
             output_path = os.path.join(output, output_path)
         cv2.imwrite(output_path,img)
-    
+
 """
 #To Do : 画像合成機能を作成
 def img_blend(path1,path2,output):
