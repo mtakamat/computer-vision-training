@@ -111,6 +111,23 @@ def get_BoundingBox(path1,path2,output):
             output_path = os.path.join(output, output_path)
         cv2.imwrite(output_path,img)
 
+def get_high_pass_filter(path1,path2,output):
+    if output:
+        os.makedirs(output, exist_ok=True)
+
+    common_files=common_use(path1,path2)
+    for file_name in common_files:
+        img1=cv2.imread(os.path.join(path1, file_name),1)
+        img2=cv2.imread(os.path.join(path2, file_name),1)
+
+        gray = cv2.cvtColor(img1, cv2.COLOR_RGB2GRAY)
+        dst = cv2.Laplacian(gray, cv2.CV_32F, ksize=3)
+
+        output_path = file_name
+        if output:
+            output_path = os.path.join(output, output_path)
+        cv2.imwrite(output_path,dst)
+
 """
 def abs_diff(path1,path2,output):
     if output:
@@ -143,6 +160,8 @@ if __name__ == "__main__":
     #    command_action = img_rotate
     elif command_name == "img_blend":
         command_action = img_blend
+    elif command_name== "get_high_pass_filter":
+        command_action = get_high_pass_filter
 
     if not command_action:
         parser.print_help()
